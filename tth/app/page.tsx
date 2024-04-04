@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import { HoverEffect } from "../components/ui/card-hover-effect";
 import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import Link from "next/link";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { db } from "./firebase";
+
 
 interface Project {
   title: string;
@@ -11,12 +16,41 @@ interface Project {
   tag: string;
 }
 
+// interface Props {
+//   projects: Project[];
+// }
+interface Items {
+  id: string;
+  title: string;
+  link: string;
+  tag: string;
+  description: string;
+  user_id: string;
+}
+
 interface Props {
-  projects: Project[];
+  projects: Items[];
 }
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
+
+  const [users, setUsers] = useState<Items[]>([]);
+
+  useEffect(() => {
+    async function fetchItems() {
+      const querySnapshot = await getDocs(collection(db, "Item"));
+      const usersData: Items[] = [];
+      querySnapshot.forEach((doc: DocumentData) => {
+        usersData.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log(usersData);
+      setUsers(usersData);
+    }
+
+    fetchItems();
+  }, []);
 
   useEffect(() => {
     // Fetching data asynchronously
@@ -43,7 +77,9 @@ export default function Home() {
         <br></br>
         <br></br>
         <br></br>
-        <CardHoverEffectDemo projects={projects} />
+        {/* <CardHoverEffectDemo projects={projects} />
+         */}
+        <CardHoverEffectDemo projects={users} />
       </div>
     </div>
   );
