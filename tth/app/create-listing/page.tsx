@@ -7,7 +7,7 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../firebase";
-import { auth } from "../../app/firebase";
+import { auth, firestore } from "../../app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 const CreateListing: React.FC = () => {
@@ -23,11 +23,15 @@ const CreateListing: React.FC = () => {
     return () => {
       setImageUpload(null); // Reset imageUpload state
       setImageUrl(null); // Reset imageUrl state
+      setTitle(""); // Reset title state
+      setDescription(""); // Reset description state
     };
   }, []);
 
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const uploadImage = async () => {
     if (!imageUpload) return;
@@ -50,6 +54,18 @@ const CreateListing: React.FC = () => {
 
       // Alert user about successful upload
       alert("Image uploaded");
+
+      // Save data to Firebase
+      await firestore.collection("listings").add({
+        title,
+        description,
+        imageUrl: downloadUrl,
+        createdAt: new Date(),
+      });
+
+      // Reset input fields after submission
+      setTitle("");
+      setDescription("");
     } catch (error) {
       console.error("Error uploading image:", error);
       // Handle error
@@ -71,6 +87,17 @@ const CreateListing: React.FC = () => {
           }
         }}
       />
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      ></textarea>
       <button onClick={uploadImage}> Upload Image </button>
 
       {/* Render the uploaded image */}
