@@ -1,14 +1,153 @@
-import React from 'react'
+"use client";
+import React, { useState, useEffect } from "react";
+import { HoverEffect } from "../../components/ui/card-hover-effect";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs, DocumentData } from "firebase/firestore";
 
-const Feed = () => {
-  return (
-    <div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <h1>Feed</h1>
-    </div>
-  )
+const firebaseConfig = {
+  apiKey: "AIzaSyAnPs18NOhGcVCtgyrxlSRSj9ePqVMxJY4",
+  authDomain: "temple-trading-hub-tth.firebaseapp.com",
+  projectId: "temple-trading-hub-tth",
+  storageBucket: "temple-trading-hub-tth.appspot.com",
+  messagingSenderId: "64770184657",
+  appId: "1:64770184657:web:fa85fbd041ff27fb487cf0",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+interface Project {
+  title: string;
+  description: string;
+  link: string;
+  tag: string;
 }
 
-export default Feed
+// interface Props {
+//   projects: Project[];
+// }
+
+interface Items {
+  id: string;
+  title: string;
+  link: string;
+  tag: string;
+  description: string;
+  user_id: string;
+}
+
+interface Props {
+  projects: Items[];
+}
+
+const items = ["tele", "tv", "tech"];
+
+export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const [users, setUsers] = useState<Items[]>([]);
+
+  useEffect(() => {
+    async function fetchItems() {
+      const querySnapshot = await getDocs(collection(db, "Item"));
+      const usersData: Items[] = [];
+      querySnapshot.forEach((doc: DocumentData) => {
+        usersData.push({ id: doc.id, ...doc.data() });
+      });
+      console.log(usersData);
+      setUsers(usersData);
+    }
+
+    fetchItems();
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/data.json");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
+  //       const fetchedProjects: Project[] = await response.json();
+  //       setProjects(fetchedProjects);
+  //       console.log(projects);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data.json");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const allProjects: Project[] = await response.json();
+
+        const filteredProjects = selectedItem
+          ? allProjects.filter((project) => project.tag === selectedItem)
+          : allProjects;
+
+        setProjects(filteredProjects);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [selectedItem]);
+
+  const handleSelectChange = (value: string) => {
+    setSelectedItem(value === selectedItem ? null : value); // Toggle selection if the same item is clicked again
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      <label htmlFor="item" className="text-white">
+        <br />
+        <select
+          id="item"
+          value={selectedItem || ""} // Set the value to selectedItem or an empty string
+          onChange={(e) => {
+            handleSelectChange(e.target.value);
+          }}
+          className="bg-gray-800 text-white p-2 rounded-md"
+        >
+          <option value="">Default</option>
+          {items.map((selectedItem) => (
+            <option key={selectedItem} value={selectedItem}>
+              {selectedItem}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div className="text-center">
+        {/* <div>
+          <CardHoverEffectDemo projects={projects} />
+        </div> */}
+        <div>
+          <CardHoverEffectDemo projects={users} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CardHoverEffectDemo({ projects }: Props) {
+  return (
+    <div>
+      <div className="max-w-5xl mx-auto px-8">
+        <HoverEffect items={projects} />
+      </div>
+    </div>
+  );
+}
