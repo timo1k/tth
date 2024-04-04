@@ -9,12 +9,9 @@ export const HoverEffect = ({
   className,
 }: {
   items: {
-    id: string;
     title: string;
-    link: string;
-    tag: string;
     description: string;
-    user_id: string;
+    link: string;
   }[];
   className?: string;
 }) => {
@@ -29,8 +26,8 @@ export const HoverEffect = ({
     >
       {items.map((item, idx) => (
         <Link
-          href={`${item.id}`}
-          key={item.id}
+          href={`${item.link}`}
+          key={item.link}
           className="relative group  block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
