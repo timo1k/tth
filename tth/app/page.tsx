@@ -4,25 +4,6 @@ import { HoverEffect } from "../components/ui/card-hover-effect";
 import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import Link from "next/link";
 
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, DocumentData } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAnPs18NOhGcVCtgyrxlSRSj9ePqVMxJY4",
-  authDomain: "temple-trading-hub-tth.firebaseapp.com",
-  projectId: "temple-trading-hub-tth",
-  storageBucket: "temple-trading-hub-tth.appspot.com",
-  messagingSenderId: "64770184657",
-  appId: "1:64770184657:web:fa85fbd041ff27fb487cf0",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-
 interface Project {
   title: string;
   description: string;
@@ -30,38 +11,29 @@ interface Project {
   tag: string;
 }
 
-// interface Props {
-//   projects: Project[];
-// }
-interface Items {
-  id: string;
-  title: string;
-  link: string;
-  tag: string;
-  description: string;
-  user_id: string;
-}
-
 interface Props {
-  projects: Items[];
+  projects: Project[];
 }
 
 export default function Home() {
-  const [users, setUsers] = useState<Items[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    async function fetchItems() {
-      const querySnapshot = await getDocs(collection(db, "Item"));
-      const usersData: Items[] = [];
-      querySnapshot.forEach((doc: DocumentData) => {
-        usersData.push({ id: doc.id, ...doc.data() });
-      });
+    // Fetching data asynchronously
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data.json"); // Assuming the JSON file is named data.json
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const fetchedProjects: Project[] = await response.json();
+        setProjects(fetchedProjects);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-      console.log(usersData);
-      setUsers(usersData);
-    }
-
-    fetchItems();
+    fetchData();
   }, []);
 
   return (
@@ -71,7 +43,7 @@ export default function Home() {
         <br></br>
         <br></br>
         <br></br>
-        <CardHoverEffectDemo projects={users} />
+        <CardHoverEffectDemo projects={projects} />
       </div>
     </div>
   );
