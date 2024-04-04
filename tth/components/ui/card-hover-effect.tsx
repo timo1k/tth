@@ -3,7 +3,7 @@ import { cn } from "../../lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-
+import Image from "next/image";
 export const HoverEffect = ({
   items,
   className,
@@ -54,7 +54,16 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <CardTitle>{item.title}</CardTitle>
-            <CardDescription>{item.description}</CardDescription>
+            <CardDescription>
+              {/* {item.description} */}
+              <Image
+                src={item.link}
+                alt="NOT FOUND"
+                height="300"
+                width="300"
+                className="object-cover"
+              />
+            </CardDescription>
           </Card>
         </Link>
       ))}

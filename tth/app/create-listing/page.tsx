@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ref,
   uploadBytes,
@@ -8,8 +8,20 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../firebase";
+import { auth } from "../../app/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const CreateListing: React.FC = () => {
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+        } else {
+          // User is signed out
+          window.location.href = "/login";
+        }
+      });
+    }, []);
+
   const [imageUpload, setImageUpload] = useState<File | null>(null);
 
   const uploadImage = async () => {

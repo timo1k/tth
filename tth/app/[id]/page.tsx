@@ -64,8 +64,8 @@ function BackgroundGradientDemo({ project }: { project: Items }) {
         <Image
           src={project.link}
           alt="NOT FOUND"
-          height="400"
-          width="400"
+          width={200}
+          height={200}
           className="object-cover"
         />
         <div className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
