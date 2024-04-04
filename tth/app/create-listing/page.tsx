@@ -18,6 +18,12 @@ const CreateListing: React.FC = () => {
         window.location.href = "/login";
       }
     });
+
+    // Cleanup function
+    return () => {
+      setImageUpload(null); // Reset imageUpload state
+      setImageUrl(null); // Reset imageUrl state
+    };
   }, []);
 
   const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -69,7 +75,7 @@ const CreateListing: React.FC = () => {
 
       {/* Render the uploaded image */}
       {imageUrl && (
-        <div>
+        <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "10px", width: "200px" }}>
           <img src={imageUrl} alt="Uploaded" style={{ maxWidth: "100%" }} />
         </div>
       )}
