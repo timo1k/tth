@@ -6,9 +6,10 @@ import {
   StorageReference,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { storage } from "../firebase";
+import { db, storage } from "../firebase";
 import { auth, firestore } from "../../app/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
 
 const CreateListing: React.FC = () => {
   useEffect(() => {
@@ -55,13 +56,16 @@ const CreateListing: React.FC = () => {
       // Alert user about successful upload
       alert("Image uploaded");
 
-      // Save data to Firebase
-      await firestore.collection("listings").add({
-        title,
-        description,
-        imageUrl: downloadUrl,
-        createdAt: new Date(),
-      });
+      try {
+        const docRef = await addDoc(collection(db, "users"), {
+          first: "Ada",
+          last: "Lovelace",
+          born: 1815
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
 
       // Reset input fields after submission
       setTitle("");
