@@ -10,29 +10,9 @@ import Image from "next/image";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { db } from "../firebase";
 import { Item } from "@radix-ui/react-select";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAnPs18NOhGcVCtgyrxlSRSj9ePqVMxJY4",
-    authDomain: "temple-trading-hub-tth.firebaseapp.com",
-    projectId: "temple-trading-hub-tth",
-    storageBucket: "temple-trading-hub-tth.appspot.com",
-    messagingSenderId: "64770184657",
-    appId: "1:64770184657:web:fa85fbd041ff27fb487cf0",
-  };
-
-// Initialize Firebase test
-const app = initializeApp(firebaseConfig);
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-
-// interface Project {
-//   title: string;
-//   description: string;
-//   link: string;
-//   email: string;
-// }
 
 interface Items {
   id: string;
@@ -42,10 +22,6 @@ interface Items {
   description: string;
   user_id: string;
 }
-
-// interface Props {
-//   projects: Items[];
-// }
 
 export default function Page({ params }: any) {
   // const [projects, setProjects] = useState<Project[]>([]);
@@ -64,24 +40,6 @@ export default function Page({ params }: any) {
 
     fetchItems();
   }, []);
-
-  // useEffect(() => {
-  //   // Fetching data asynchronously
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/data.json"); // Assuming the JSON file is named data.json
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch data");
-  //       }
-  //       const fetchedProjects: Project[] = await response.json();
-  //       setProjects(fetchedProjects);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   // Filter projects based on the specific link
   const id = `${params.id}`; // Change this to your desired link

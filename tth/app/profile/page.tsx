@@ -1,11 +1,9 @@
-import ProfilePage from "../../srce/ProfilePage"
+import ProfilePage from "../../srce/ProfilePage";
 
-export default function SignUp(){
-
-return(
-<div>
-<ProfilePage/>
-</div>
-
-)
-};
+export default function SignUp() {
+  return (
+    <div>
+      <ProfilePage />
+    </div>
+  );
+}
