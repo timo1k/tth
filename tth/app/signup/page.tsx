@@ -1,9 +1,11 @@
-import React from 'react'
+import SignupPage from "../../srce/SignupPage"
 
-const SignUp = () => {
-  return (
-    <div>SignUp</div>
-  )
-}
+export default function SignUp(){
 
-export default SignUp
+return(
+<div>
+<SignupPage/>
+</div>
+
+)
+};

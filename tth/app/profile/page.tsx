@@ -1,14 +1,11 @@
-import React from 'react'
+import ProfilePage from "../../srce/ProfilePage"
 
-const Profile = () => {
-  return (
-    <div>
-        <br></br>
-        <br></br>
-        <br></br>
-        Profile
-    </div>
-  )
-}
+export default function SignUp(){
 
-export default Profile
+return(
+<div>
+<ProfilePage/>
+</div>
+
+)
+};
