@@ -20,13 +20,6 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-interface Project {
-  title: string;
-  description: string;
-  link: string;
-  tag: string;
-}
-
 // interface Props {
 //   projects: Project[];
 // }
@@ -44,10 +37,10 @@ interface Props {
   projects: Items[];
 }
 
-const items = ["tele", "tv", "tech"];
+const items = ["Books", "Electronics"];
 
 export default function Home() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Items[]>([]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const [users, setUsers] = useState<Items[]>([]);
@@ -85,23 +78,24 @@ export default function Home() {
   // }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        const response = await fetch("/data.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const allProjects: Project[] = await response.json();
+        const querySnapshot = await getDocs(collection(db, "Item"));
+        const usersData: Items[] = [];
+        querySnapshot.forEach((doc: DocumentData) => {
+          usersData.push({ id: doc.id, ...doc.data() });
+        });
+        console.log(usersData);
 
-        const filteredProjects = selectedItem
-          ? allProjects.filter((project) => project.tag === selectedItem)
-          : allProjects;
+        const filteredItems = selectedItem
+          ? usersData.filter((item) => item.tag === selectedItem)
+          : usersData;
 
-        setProjects(filteredProjects);
+        setUsers(filteredItems);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
+    }
 
     fetchData();
   }, [selectedItem]);
