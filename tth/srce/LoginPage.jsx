@@ -1,7 +1,7 @@
 "use client";
 import "../srce/index.css";
 import React, { useState, useEffect } from 'react';
-import {auth} from '../srce/firebase';
+import {auth} from '../app/firebase';
 import {signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
