@@ -6,6 +6,7 @@ import { storage, firestore } from "../firebase";
 import { auth } from "../../app/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
+import { Button } from "@/components/ui/button";
 
 const CreateListing: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -112,6 +113,7 @@ const CreateListing: React.FC = () => {
       ></textarea>
       <br />
       <button type="button" onClick={uploadImage} style={{ padding: "10px 20px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}> Upload </button>
+  
 
       {/* Render the uploaded image */}
       {imageUrl && (

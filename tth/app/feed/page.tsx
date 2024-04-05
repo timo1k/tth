@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { HoverEffect } from "../../components/ui/card-hover-effect";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { getFirestore, orderBy } from "firebase/firestore";
+import { collection, getDocs, DocumentData, query } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnPs18NOhGcVCtgyrxlSRSj9ePqVMxJY4",
@@ -47,19 +47,38 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchItems() {
-      const querySnapshot = await getDocs(collection(db, "Item"));
-      const usersData: Items[] = [];
-      querySnapshot.forEach((doc: DocumentData) => {
-        usersData.push({ id: doc.id, ...doc.data() });
-      });
-      console.log(usersData);
-      setUsers(usersData);
+      try {
+        // Query Firestore collection "Item" and order by createdAt in descending order
+        const q = query(collection(db, "Item"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const data: Items[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        } as Items));
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-
     fetchItems();
   }, []);
 
   useEffect(() => {
+    async function fetchItems() {
+      try {
+        // Query Firestore collection "Item" and order by createdAt in descending order
+        const q = query(collection(db, "Item"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const data: Items[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        } as Items));
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    
     async function fetchData() {
       try {
         const querySnapshot = await getDocs(collection(db, "Item"));
@@ -78,8 +97,13 @@ export default function Home() {
         console.error("Error fetching data:", error);
       }
     }
+    if(selectedItem === "Default"){
+      fetchItems();
+    }else{
+      fetchData();
+    }
 
-    fetchData();
+    
   }, [selectedItem]);
 
   const handleSelectChange = (value: string) => {
@@ -98,7 +122,7 @@ export default function Home() {
           }}
           className="bg-gray-800 text-white p-2 rounded-md"
         >
-          <option value="">Default</option>
+          <option value="Default">Default</option>
           {items.map((selectedItem) => (
             <option key={selectedItem} value={selectedItem}>
               {selectedItem}
@@ -107,9 +131,6 @@ export default function Home() {
         </select>
       </label>
       <div className="text-center">
-        {/* <div>
-          <CardHoverEffectDemo projects={projects} />
-        </div> */}
         <div>
           <CardHoverEffectDemo projects={users} />
         </div>
