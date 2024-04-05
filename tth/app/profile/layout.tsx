@@ -22,6 +22,12 @@ const sidebarNavItems = [
     title: "Messaging",
     href: "/profile/messaging",
   },
+
+  {
+    title: "Logout",
+    href: "/profile/logout",
+  },
+
   // {
   //   title: "Appearance",
   //   href: "/examples/forms/appearance",
