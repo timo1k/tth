@@ -3,26 +3,9 @@ import React, { useState, useEffect } from "react";
 import { HoverEffect } from "../../components/ui/card-hover-effect";
 import { initializeApp } from "firebase/app";
 import { getFirestore, orderBy } from "firebase/firestore";
-import { collection, getDocs, DocumentData, query } from "firebase/firestore";
+import { collection, getDocs, DocumentData, query, } from "firebase/firestore";
+import { db } from "../firebase";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAnPs18NOhGcVCtgyrxlSRSj9ePqVMxJY4",
-  authDomain: "temple-trading-hub-tth.firebaseapp.com",
-  projectId: "temple-trading-hub-tth",
-  storageBucket: "temple-trading-hub-tth.appspot.com",
-  messagingSenderId: "64770184657",
-  appId: "1:64770184657:web:fa85fbd041ff27fb487cf0",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-
-// interface Props {
-//   projects: Project[];
-// }
 
 interface Items {
   id: string;
@@ -44,24 +27,6 @@ export default function Home() {
   const [selectedItem, setSelectedItem] = useState<string | null>("Default");
 
   const [users, setUsers] = useState<Items[]>([]);
-
-  // useEffect(() => {
-  //   async function fetchItems() {
-  //     try {
-  //       // Query Firestore collection "Item" and order by createdAt in descending order
-  //       const q = query(collection(db, "Item"), orderBy("createdAt", "desc"));
-  //       const querySnapshot = await getDocs(q);
-  //       const data: Items[] = querySnapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       } as Items));
-  //       setUsers(data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }
-  //   fetchItems();
-  // }, []);
 
   useEffect(() => {
     async function fetchItems() {
