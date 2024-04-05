@@ -77,7 +77,7 @@ function BackgroundGradientDemo({ project }: { project: Items }) {
         </div>
         <br></br>
         <div className="text-sm text-neutral-600 dark:text-neutral-400">
-          <h1>contant me: {project.user_id}</h1>
+          <h1>contact me: {project.user_id}</h1>
         </div>
 
         {/* <Link href={project.link}>LINKKKKKK</Link> */}
