@@ -36,7 +36,7 @@ function Profile() {
         src={`https://dummyimage.com/80x80/555555/ffffff&text=${avater}`}
         alt=""
       />
-      <p>Wellcome</p>
+      <p>Welcome</p>
       <p>Email: {email}</p>
       <p>UserID: {userID}</p>
     </div>
