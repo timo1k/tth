@@ -41,27 +41,27 @@ const items = ["Books", "Electronics"];
 
 export default function Home() {
   const [projects, setProjects] = useState<Items[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>("Default");
 
   const [users, setUsers] = useState<Items[]>([]);
 
-  useEffect(() => {
-    async function fetchItems() {
-      try {
-        // Query Firestore collection "Item" and order by createdAt in descending order
-        const q = query(collection(db, "Item"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        const data: Items[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        } as Items));
-        setUsers(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchItems();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchItems() {
+  //     try {
+  //       // Query Firestore collection "Item" and order by createdAt in descending order
+  //       const q = query(collection(db, "Item"), orderBy("createdAt", "desc"));
+  //       const querySnapshot = await getDocs(q);
+  //       const data: Items[] = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       } as Items));
+  //       setUsers(data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   }
+  //   fetchItems();
+  // }, []);
 
   useEffect(() => {
     async function fetchItems() {
