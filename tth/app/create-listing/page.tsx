@@ -51,9 +51,6 @@ const CreateListing: React.FC = () => {
       // Set the download URL in the state
       setImageUrl(downloadUrl);
 
-      // Alert user about successful upload
-      alert("Image uploaded");
-
       // Save data to Firestore
       const docRef = await addDoc(collection(firestore, "Item"), {
         title: title,
@@ -105,7 +102,7 @@ const CreateListing: React.FC = () => {
         style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc", color: "black" }}
       ></textarea>
       <br />
-      <button type="button" onClick={uploadImage} style={{ padding: "10px 20px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}> Upload Image </button>
+      <button type="button" onClick={uploadImage} style={{ padding: "10px 20px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}> Upload </button>
 
       {/* Render the uploaded image */}
       {imageUrl && (
