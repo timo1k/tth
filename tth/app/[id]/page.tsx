@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import React from "react";
 import { BackgroundGradient } from "../../components/ui/background-gradient";
-import { IconAppWindow } from "@tabler/icons-react";
 import Image from "next/image";
 
 import { initializeApp } from "firebase/app";
