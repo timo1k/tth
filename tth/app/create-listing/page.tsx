@@ -58,8 +58,8 @@ const CreateListing: React.FC = () => {
       const docRef = await addDoc(collection(firestore, "Item"), {
         title: title,
         description: description,
-        imageUrl: downloadUrl,
-        userId: currentUser.uid, // Save the current user's ID with the data
+        link: downloadUrl,
+        user_id: currentUser.uid, // Save the current user's ID with the data
         createdAt: new Date(),
       });
       console.log("Document written with ID: ", docRef.id);
