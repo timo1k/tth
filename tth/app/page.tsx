@@ -52,23 +52,6 @@ export default function Home() {
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    // Fetching data asynchronously
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data.json"); // Assuming the JSON file is named data.json
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const fetchedProjects: Project[] = await response.json();
-        setProjects(fetchedProjects);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
