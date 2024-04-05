@@ -19,7 +19,9 @@ const CreateListing: React.FC = () => {
       if (user) {
         setCurrentUser(user);
       } else {
+        //if user not log in 
         setCurrentUser(null);
+        window.location.href = "/login";
       }
     });
 
