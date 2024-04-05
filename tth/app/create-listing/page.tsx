@@ -13,6 +13,7 @@ const CreateListing: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -38,7 +39,10 @@ const CreateListing: React.FC = () => {
   };
 
   const uploadImage = async () => {
-    if (!imageUpload || !currentUser) return;
+    if (!imageUpload || !currentUser || !title || !description) {
+      setError("Please fill in all required fields.");
+      return;
+    }
 
     const imageRef: StorageReference = ref(storage, `images/${imageUpload.name + uuidv4()}`);
 
@@ -66,6 +70,7 @@ const CreateListing: React.FC = () => {
       // Reset input fields after submission
       setTitle("");
       setDescription("");
+      setError("");
     } catch (error) {
       console.error("Error uploading image:", error);
       // Handle error
@@ -78,7 +83,9 @@ const CreateListing: React.FC = () => {
       <br />
       <br />
       <br />
-      <p>We need to add other things to offer user items as well.</p>
+      <h1>Create a Post</h1>
+      {/* show the error msg */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <input
         type="file"
         onChange={(event) => {
