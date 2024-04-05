@@ -19,6 +19,7 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
 
   return (
     <div
@@ -55,14 +56,21 @@ export const HoverEffect = ({
           <Card>
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>
-              {/* {item.description} */}
-              <Image
-                src={item.link}
-                alt="NOT FOUND"
-                height="300"
-                width="300"
-                className="object-cover"
-              />
+              {/* Render image or video based on link */}
+              {item.link.includes(".mp4") || item.link.includes(".webm") || item.link.includes(".ogg") || item.link.includes(".mov") ? (
+                <video width="300" height="300" controls autoPlay muted loop>
+                  <source src={item.link} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <Image
+                  src={item.link}
+                  alt="NOT FOUND"
+                  height="300"
+                  width="300"
+                  className="object-cover"
+                />
+              )}
             </CardDescription>
           </Card>
         </Link>

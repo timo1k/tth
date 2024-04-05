@@ -6,6 +6,7 @@ import { storage, firestore } from "../firebase";
 import { auth } from "../../app/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
+import { Button } from "@/components/ui/button";
 
 const CreateListing: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -13,6 +14,7 @@ const CreateListing: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -38,7 +40,10 @@ const CreateListing: React.FC = () => {
   };
 
   const uploadImage = async () => {
-    if (!imageUpload || !currentUser) return;
+    if (!imageUpload || !currentUser || !title || !description) {
+      setError("Please fill in all required fields.");
+      return;
+    }
 
     const imageRef: StorageReference = ref(storage, `images/${imageUpload.name + uuidv4()}`);
 
@@ -66,6 +71,7 @@ const CreateListing: React.FC = () => {
       // Reset input fields after submission
       setTitle("");
       setDescription("");
+      setError("");
     } catch (error) {
       console.error("Error uploading image:", error);
       // Handle error
@@ -78,7 +84,9 @@ const CreateListing: React.FC = () => {
       <br />
       <br />
       <br />
-      <p>We need to add other things to offer user items as well.</p>
+      <h1>Create a Post</h1>
+      {/* show the error msg */}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <input
         type="file"
         onChange={(event) => {
@@ -105,6 +113,7 @@ const CreateListing: React.FC = () => {
       ></textarea>
       <br />
       <button type="button" onClick={uploadImage} style={{ padding: "10px 20px", background: "#007bff", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}> Upload </button>
+  
 
       {/* Render the uploaded image */}
       {imageUrl && (
